@@ -10,7 +10,7 @@ public class Grid
 
     //Méthodes
         //Principales
-    public void init() // Remplit la grille de Zéros et initialise la liste des possibles
+    public void init() // Remplit la grille de zéros et initialise la liste des possibles
     {
         this.fillZero();
         this.initPossibles();
@@ -24,8 +24,16 @@ public class Grid
             System.out.print(x + " |");
             for(int y = 0; y<size; y++)
             {
-                System.out.print(grid[x][y]);
-                System.out.print("|");
+                if (grid[x][y] == 0)
+                {
+                    System.out.print(" ");
+                    System.out.print("|");
+                }
+                else
+                {
+                    System.out.print(grid[x][y]);
+                    System.out.print("|");
+                }
             }
             System.out.print("\n");
             System.out.println("  -------------------");
@@ -63,6 +71,32 @@ public class Grid
                     grid[x][y] = listPossibles.get((int)(Math.random() * listPossibles.size()));
                 }
                 this.display();
+            }
+        }
+    }
+    public void hideNbr(int numbersToHide) // Supprime des nombres de la grille en vérifiant qu'il n'existe toujours qu'une solution unique
+    {
+        while (numbersToHide != 0)
+        {
+            int x = (int)(Math.random() * size); // On choisit au random des coordonnées
+            int y = (int)(Math.random() * size);
+            int prevValue = grid[x][y]; // On sauvegarde la valeur de la case
+
+            grid[x][y] = 0; // On vide la case
+            checkPossible(x, y); // On vérifie les possibles de la case
+            List<Integer> listPossibles = new ArrayList<>();
+            for (int i = 0; i < size; i++) // Ajoute tous les possibles restants à la liste
+            {
+                if (possibles[x][y][i])
+                    listPossibles.add(i+1);
+            }
+            if (listPossibles.size() > 1) // S'il y a plus d'une solution
+            {
+                grid[x][y] = prevValue; // On restaure la case
+            }
+            else // Sinon on décrémente le nombre de chiffres à cacher
+            {
+                numbersToHide--;
             }
         }
     }
@@ -131,15 +165,13 @@ public class Grid
         }
         return true;
     }
-    private List<Integer> rollback(int x, int y) //
+    private List<Integer> rollback(int x, int y) // Revient en arrière en marquant les nombres essayés comme faux et renvoie les nouvelles coordonnées de départ
     {
         List<Integer> coo = new ArrayList<>();
         List<Integer> listPossibles = new ArrayList<>();
 
         while (listPossibles.size() == 0)
         {
-            listPossibles.clear(); // On vide la liste des possibles
-
             if (y == 0) // Si on est en début de ligne, on remonte, on marque le test précédent comme faux et on vide la case
             {
                 y = size-1;
