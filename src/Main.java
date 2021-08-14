@@ -7,8 +7,7 @@ class Main
         grid.init();
         grid.fill();
         grid.display();
-        grid.hideNbr(40);
+        grid.hideNbr(30);
         grid.display();
-
     }
 }
