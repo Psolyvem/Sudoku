@@ -113,8 +113,14 @@ public class Grid
     {
         List<Integer[]> solutions = new ArrayList<>();
         int solutionTested = 0;
-        int[][] gridCopy; // On fait une copie propre de la grille originale
-        gridCopy = grid;
+        int[][] gridCopy = new int[size][size]; // On fait une copie propre de la grille originale
+        for (int x = 0; x < size; x++)
+        {
+            for (int y = 0; y < size; y++)
+            {
+                gridCopy[x][y] = grid[x][y];
+            }
+        }
 
         while (!this.isFull()) // On résout la grille une première fois normalement, et on liste les chiffres mis dans la grille avec leurs coordonnées
         {
@@ -137,7 +143,7 @@ public class Grid
                             Integer[] thisNumber = new Integer[3]; // On crée un tableau contenant les coordonnées et le chiffre mis dans la grille.
                             thisNumber[0] = x;
                             thisNumber[1] = y;
-                            thisNumber[2] = listPossibles.get(0);
+                            thisNumber[2] = (listPossibles.get(0) - 1);
                             solutions.add(thisNumber); // Et on ajoute ce tableau à la liste des solutions.
                             System.out.println("Added a number to the forbidden list");
                         }
@@ -146,7 +152,13 @@ public class Grid
             }
         }
         System.out.println("Solved the grid once checking for unique solution");
-        grid = gridCopy; // On restaure la grille
+        for (int x = 0; x < size; x++) // On restaure la grille
+        {
+            for (int y = 0; y < size; y++)
+            {
+                grid[x][y] = gridCopy[x][y];
+            }
+        }
 
         while (true) // On tente de résoudre la grille encore une fois, mais en interdisant un à un les chiffres de la liste des solutions
         {
@@ -180,18 +192,36 @@ public class Grid
             }
             if (this.isFull()) // Si une solution est trouvée, alors il n'y a pas de solution unique et on renvoie false
             {
-                grid = gridCopy; // On restaure la grille
+                for (int x = 0; x < size; x++) // On restaure la grille
+                {
+                    for (int y = 0; y < size; y++)
+                    {
+                        grid[x][y] = gridCopy[x][y];
+                    }
+                }
                 return false;
             }
             if (numbersPlaced == 0) // Si une lecture de la grille n'a pas réussi à placer un seul chiffre, alors il n'y a pas de solution avec cet interdit, on passe au suivant
             {
                 solutionTested++;
-                grid = gridCopy; // On restaure la grille
-                System.out.println("Solutions tested" + solutionTested);
+                for (int x = 0; x < size; x++) // On restaure la grille
+                {
+                    for (int y = 0; y < size; y++)
+                    {
+                        grid[x][y] = gridCopy[x][y];
+                    }
+                }
+                System.out.println("Solutions tested : " + solutionTested);
             }
             if (solutionTested == solutions.size()) // Si tous les interdits ont été testés et qu'aucune solution n'a été trouvée, on renvoie true
             {
-                grid = gridCopy; // On restaure la grille
+                for (int x = 0; x < size; x++) // On restaure la grille
+                {
+                    for (int y = 0; y < size; y++)
+                    {
+                        grid[x][y] = gridCopy[x][y];
+                    }
+                }
                 return true;
             }
         }
