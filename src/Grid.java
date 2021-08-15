@@ -22,7 +22,7 @@ public class Grid
         System.out.println("  -------------------");
         for (int x = 0; x < size; x++)
         {
-            System.out.print(x + " |");
+            System.out.print(x + 1 + " |");
             for (int y = 0; y < size; y++)
             {
                 if (grid[x][y] == 0)
@@ -73,7 +73,7 @@ public class Grid
         }
     }
 
-    public void hideNbr(int numbersToHide) // Supprime des nombres de la grille en vérifiant qu'il n'existe toujours qu'une solution unique
+    public void hideNbr() // Supprime des nombres de la grille en vérifiant qu'il n'existe toujours qu'une solution unique
     {
         boolean[][] alreadyTested = new boolean[size][size]; // On crée une grille qui vérifie si une case a déjà été testée
         for (int i = 0; i < size; i++) // On initialise à false
@@ -84,8 +84,9 @@ public class Grid
             }
         }
         int numbersHidden = 0;
+        boolean gridFullyTested = false;
 
-        while (numbersHidden != numbersToHide)
+        while (!gridFullyTested)
         {
             int x = (int) (Math.random() * size); // On choisit au random des coordonnées
             int y = (int) (Math.random() * size);
@@ -106,6 +107,18 @@ public class Grid
                 }
                 alreadyTested[x][y] = true; // On marque la case comme testée
             }
+            gridFullyTested = true; // On vérifie si toutes les cases ont été testées
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    if (!alreadyTested[i][j])
+                    {
+                        gridFullyTested = false;
+                        break;
+                    }
+                }
+            }
         }
     }
 
@@ -124,6 +137,7 @@ public class Grid
 
         while (!this.isFull()) // On résout la grille une première fois normalement, et on liste les chiffres mis dans la grille avec leurs coordonnées
         {
+            int numbersPlaced = 0; // Nombre de chiffres placés durant cette lecture de la grille
             for (int x = 0; x < size; x++)
             {
                 for (int y = 0; y < size; y++)
@@ -140,6 +154,7 @@ public class Grid
                         if (listPossibles.size() == 1) // Si cette case à un seul possible on le met dedans
                         {
                             grid[x][y] = listPossibles.get(0);
+                            numbersPlaced++; // On incrémente le compteur de nombres placés
                             Integer[] thisNumber = new Integer[3]; // On crée un tableau contenant les coordonnées et le chiffre mis dans la grille.
                             thisNumber[0] = x;
                             thisNumber[1] = y;
@@ -149,6 +164,19 @@ public class Grid
                         }
                     }
                 }
+            }
+            if (numbersPlaced == 0) // Si une lecture de la grille n'a pas réussi à placer un seul chiffre, alors il n'y a pas de solution.
+            {
+                solutionTested++;
+                for (int x = 0; x < size; x++) // On restaure la grille
+                {
+                    for (int y = 0; y < size; y++)
+                    {
+                        grid[x][y] = gridCopy[x][y];
+                    }
+                }
+                System.out.println("Solutions tested : " + solutionTested);
+                return false;
             }
         }
         System.out.println("Solved the grid once checking for unique solution");
