@@ -1,6 +1,9 @@
+import javax.swing.*;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+
 class Main
 {
-    public static void main(String[] args)
+    public static void main(String[] args) throws Exception
     {
         Grid grid = new Grid();
 
@@ -11,5 +14,9 @@ class Main
         grid.display();
         grid.solve(grid);
         grid.display();
+
+        UIManager.setLookAndFeel(new NimbusLookAndFeel());
+        SudokuWindow mainWindow = new SudokuWindow();
+        mainWindow.init();
     }
 }
