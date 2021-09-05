@@ -18,5 +18,6 @@ class Main
         UIManager.setLookAndFeel(new NimbusLookAndFeel());
         SudokuWindow mainWindow = new SudokuWindow();
         mainWindow.init();
+        mainWindow.menu();
     }
 }

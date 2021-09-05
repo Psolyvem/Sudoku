@@ -1,9 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
-public class SudokuWindow
+public class SudokuWindow implements ActionListener
 {
     private JPanel rootPanel = new JPanel();
+    private JPanel sudokuPanel = new JPanel();
+    private JPanel menuPanel = new JPanel();
+    JButton play = new JButton("Play");
 
     //Constructeur
     public SudokuWindow()
@@ -22,6 +26,10 @@ public class SudokuWindow
         ImageIcon icon = new ImageIcon("./images/icon.png");
         frame.setIconImage(icon.getImage());
         frame.add(rootPanel);
+        rootPanel.add(sudokuPanel);
+        rootPanel.add(menuPanel);
+        sudokuPanel.setVisible(false);
+        menuPanel.setVisible(false);
 
         int windowWidth = 600;
         int windowHeight = 600;
@@ -32,16 +40,37 @@ public class SudokuWindow
         frame.setLocation((int)screenWidth/2 - windowWidth/2, (int)screenHeight/2 - windowHeight/2);
 
         frame.setVisible(true);
+    }
 
+    public void menu()
+    {
+        menuPanel.setVisible(true);
+        menuPanel.add(play);
+        play.addActionListener(this);
+    }
+
+    public void play()
+    {
+        sudokuPanel.setVisible(true);
         //Init the grid and sudokuPanel
-        SudokuCase case1 = new SudokuCase(1, rootPanel);
-        SudokuCase case2 = new SudokuCase(2, rootPanel);
-        SudokuCase case3 = new SudokuCase(3, rootPanel);
-        SudokuCase case4 = new SudokuCase(4, rootPanel);
-        SudokuCase case5 = new SudokuCase(0, rootPanel);
-        SudokuCase case6 = new SudokuCase(8, rootPanel);
+        SudokuCase case1 = new SudokuCase(1, sudokuPanel);
+        SudokuCase case2 = new SudokuCase(2, sudokuPanel);
+        SudokuCase case3 = new SudokuCase(3, sudokuPanel);
+        SudokuCase case4 = new SudokuCase(4, sudokuPanel);
+        SudokuCase case5 = new SudokuCase(0, sudokuPanel);
+        SudokuCase case6 = new SudokuCase(8, sudokuPanel);
 
         //Update display
         rootPanel.updateUI();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        if(e.getSource() == play);
+        {
+            menuPanel.setVisible(false);
+            this.play();
+        }
     }
 }
