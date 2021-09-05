@@ -4,7 +4,6 @@ import java.awt.*;
 public class SudokuWindow
 {
     private JPanel rootPanel = new JPanel();
-    private JLabel case1 = new JLabel();
 
     //Constructeur
     public SudokuWindow()
@@ -35,8 +34,14 @@ public class SudokuWindow
         frame.setVisible(true);
 
         //Init the grid and sudokuPanel
-        ImageIcon zero = new ImageIcon("./images/0.png");
-        case1.setIcon(zero);
-        rootPanel.add(case1);
+        SudokuCase case1 = new SudokuCase(1, rootPanel);
+        SudokuCase case2 = new SudokuCase(2, rootPanel);
+        SudokuCase case3 = new SudokuCase(3, rootPanel);
+        SudokuCase case4 = new SudokuCase(4, rootPanel);
+        SudokuCase case5 = new SudokuCase(0, rootPanel);
+        SudokuCase case6 = new SudokuCase(8, rootPanel);
+
+        //Update display
+        rootPanel.updateUI();
     }
 }
