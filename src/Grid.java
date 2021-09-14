@@ -4,9 +4,11 @@ import java.util.List;
 public class Grid
 {
     //Attributs
-    private final int size = 9; // Taille de la grille
+    public final static int size = 9; // Taille de la grille
+    public int difficulty = 1;
     public int[][] grid = new int[size][size];
-    public boolean[][][] possibles = new boolean[size][size][size]; // Tableau de booléens listant les nombres possibles sur chaque case
+    public int [][] originalGrid = new int[size][size];
+    protected boolean[][][] possibles = new boolean[size][size][size]; // Tableau de booléens listant les nombres possibles sur chaque case
 
     //Méthodes
     //Principales
@@ -71,10 +73,26 @@ public class Grid
                 }
             }
         }
+        for (int x = 0; x < size; x++)
+        {
+            for (int y = 0; y < size; y++)
+            {
+                originalGrid[x][y] = grid[x][y];
+            }
+        }
     }
 
     public void hideNbr() // Supprime des nombres de la grille en vérifiant qu'il n'existe toujours qu'une solution unique
     {
+        int numbersToHide = 81; // On initialise à un nombre trop grand pour être résolu
+        //Définition de la difficulté
+        if(difficulty == 1)
+            numbersToHide = 81;
+        if(difficulty == 2)
+            numbersToHide = 40;
+        if(difficulty == 3)
+            numbersToHide = 30;
+
         boolean[][] alreadyTested = new boolean[size][size]; // On crée une grille qui vérifie si une case a déjà été testée
         for (int i = 0; i < size; i++) // On initialise à false
         {
@@ -88,6 +106,9 @@ public class Grid
 
         while (!gridFullyTested)
         {
+            if(numbersHidden == numbersToHide) // Si on a caché suffisamment de chiffres pour le niveau de difficulté, on arrête.
+                break;
+
             int x = (int) (Math.random() * size); // On choisit au random des coordonnées
             int y = (int) (Math.random() * size);
 
@@ -280,6 +301,24 @@ public class Grid
                 }
             }
         }
+    }
+
+    public boolean isCorrect() // Vérifie si la grille est valide
+    {
+        for (int x = 0; x < size; x++)
+        {
+            for (int y = 0; y < size; y++)
+            {
+                if(grid[x][y] != originalGrid[x][y])
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    public void setDifficulty(int difficulty)
+    {
+        this.difficulty = difficulty;
     }
 
     //Secondaires
