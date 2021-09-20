@@ -12,7 +12,8 @@ public class SudokuCase implements MouseListener
     JLabel container = new JLabel();
     JPanel panel;
     boolean mouseHovering = false;
-    boolean isFix = false; //Case modifiable ou non
+    boolean isGiven = false; //Case modifiable ou non
+    boolean isLocked = false; //Case résolue, non modifiable
 
     ImageIcon zero = new ImageIcon("./images/0.png");
     ImageIcon one = new ImageIcon("./images/1.png");
@@ -57,6 +58,26 @@ public class SudokuCase implements MouseListener
     ImageIcon eightFix = new ImageIcon("./images/8fix.png");
     ImageIcon nineFix = new ImageIcon("./images/9fix.png");
 
+    ImageIcon oneWrong = new ImageIcon("./images/1wrong.png");
+    ImageIcon twoWrong = new ImageIcon("./images/2wrong.png");
+    ImageIcon threeWrong = new ImageIcon("./images/3wrong.png");
+    ImageIcon fourWrong = new ImageIcon("./images/4wrong.png");
+    ImageIcon fiveWrong = new ImageIcon("./images/5wrong.png");
+    ImageIcon sixWrong = new ImageIcon("./images/6wrong.png");
+    ImageIcon sevenWrong = new ImageIcon("./images/7wrong.png");
+    ImageIcon eightWrong = new ImageIcon("./images/8wrong.png");
+    ImageIcon nineWrong = new ImageIcon("./images/9wrong.png");
+
+    ImageIcon oneRight = new ImageIcon("./images/1right.png");
+    ImageIcon twoRight = new ImageIcon("./images/2right.png");
+    ImageIcon threeRight = new ImageIcon("./images/3right.png");
+    ImageIcon fourRight = new ImageIcon("./images/4right.png");
+    ImageIcon fiveRight = new ImageIcon("./images/5right.png");
+    ImageIcon sixRight = new ImageIcon("./images/6right.png");
+    ImageIcon sevenRight = new ImageIcon("./images/7right.png");
+    ImageIcon eightRight = new ImageIcon("./images/8right.png");
+    ImageIcon nineRight = new ImageIcon("./images/9right.png");
+
     //Constructeur
     SudokuCase(int value, JPanel panel, Grid grid, int posx, int posy)
     {
@@ -67,7 +88,7 @@ public class SudokuCase implements MouseListener
         this.posy = posy;
         container.addMouseListener(this);
         if (value != 0)
-            isFix = true;
+            isGiven = true;
 
         switch (value) //On attribue la bonne image en fonction de la valeur
         {
@@ -86,11 +107,49 @@ public class SudokuCase implements MouseListener
         panel.add(container);
     }
 
+    public void resolve()
+    {
+        if(value != grid.originalGrid[posx][posy])
+        {
+            value = grid.originalGrid[posx][posy]; //On remet la bonne valeur dans la case pour le corrigé
+            switch (value) //On attribue la bonne image en fonction de la valeur
+            {
+                case 1 -> actualIcon = oneWrong;
+                case 2 -> actualIcon = twoWrong;
+                case 3 -> actualIcon = threeWrong;
+                case 4 -> actualIcon = fourWrong;
+                case 5 -> actualIcon = fiveWrong;
+                case 6 -> actualIcon = sixWrong;
+                case 7 -> actualIcon = sevenWrong;
+                case 8 -> actualIcon = eightWrong;
+                case 9 -> actualIcon = nineWrong;
+            }
+            container.setIcon(actualIcon);
+        }
+        else if(value == grid.originalGrid[posx][posy] && !isGiven)
+        {
+            switch (value) //On attribue la bonne image en fonction de la valeur
+            {
+                case 1 -> actualIcon = oneRight;
+                case 2 -> actualIcon = twoRight;
+                case 3 -> actualIcon = threeRight;
+                case 4 -> actualIcon = fourRight;
+                case 5 -> actualIcon = fiveRight;
+                case 6 -> actualIcon = sixRight;
+                case 7 -> actualIcon = sevenRight;
+                case 8 -> actualIcon = eightRight;
+                case 9 -> actualIcon = nineRight;
+            }
+            container.setIcon(actualIcon);
+        }
+        this.isLocked = true;
+    }
+
     //Redéfinition de l'interface MouseListener
     @Override
     public void mouseClicked(MouseEvent e)
     {
-        if (!isFix)
+        if (!isGiven && !isLocked)
         {
             if (value <= 9)
             {
@@ -122,7 +181,7 @@ public class SudokuCase implements MouseListener
     @Override
     public void mousePressed(MouseEvent e)
     {
-        if (!isFix)
+        if (!isGiven && !isLocked)
         {
             if (mouseHovering)
             {
@@ -147,7 +206,7 @@ public class SudokuCase implements MouseListener
     @Override
     public void mouseReleased(MouseEvent e)
     {
-        if (!isFix)
+        if (!isGiven && !isLocked)
         {
             switch (value) //On attribue la bonne image en fonction de la valeur
             {
@@ -187,7 +246,7 @@ public class SudokuCase implements MouseListener
     @Override
     public void mouseEntered(MouseEvent e)
     {
-        if (!isFix)
+        if (!isGiven && !isLocked)
         {
             mouseHovering = true;
             switch (value) //On attribue la bonne image en fonction de la valeur
@@ -210,7 +269,7 @@ public class SudokuCase implements MouseListener
     @Override
     public void mouseExited(MouseEvent e)
     {
-        if (!isFix)
+        if (!isGiven && !isLocked)
         {
             mouseHovering = false;
             switch (value) //On attribue la bonne image en fonction de la valeur
