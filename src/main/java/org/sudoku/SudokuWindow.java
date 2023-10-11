@@ -34,12 +34,10 @@ public class SudokuWindow implements ActionListener
 
 	private Map<Integer, SudokuCase> mapOfCases = new HashMap<>();
 
-	//Constructeur
 	public SudokuWindow()
 	{
 	}
 
-	//Méthodes
 	public void init() throws IOException
 	{
 		//Init JFrame and Panels

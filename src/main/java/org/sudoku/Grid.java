@@ -7,7 +7,7 @@ public class Grid
 {
     //Attributs
     public final static int size = 9; // Taille de la grille
-    public int difficulty = 1;
+    private int difficulty = 1;
     public int[][] grid = new int[size][size];
     public int [][] originalGrid = new int[size][size];
     protected boolean[][][] possibles = new boolean[size][size][size]; // Tableau de booléens listant les nombres possibles sur chaque case
@@ -122,11 +122,9 @@ public class Grid
                 if (!this.checkUniqueSolution()) // S'il y a plus d'une solution
                 {
                     grid[x][y] = prevValue; // On restaure la case
-                    System.out.println("There was more than one solution here");
                 } else // Sinon, on décrémente le nombre de chiffres à cacher
                 {
                     numbersHidden++;
-                    System.out.println("I hid " + numbersHidden + " so far");
                 }
                 alreadyTested[x][y] = true; // On marque la case comme testée
             }
@@ -183,7 +181,6 @@ public class Grid
                             thisNumber[1] = y;
                             thisNumber[2] = (listPossibles.get(0) - 1);
                             solutions.add(thisNumber); // Et on ajoute ce tableau à la liste des solutions.
-                            System.out.println("Added a number to the forbidden list");
                         }
                     }
                 }
@@ -198,11 +195,9 @@ public class Grid
                         grid[x][y] = gridCopy[x][y];
                     }
                 }
-                System.out.println("Solutions tested : " + solutionTested);
                 return false;
             }
         }
-        System.out.println("Solved the grid once checking for unique solution");
         for (int x = 0; x < size; x++) // On restaure la grille
         {
             for (int y = 0; y < size; y++)
@@ -236,7 +231,6 @@ public class Grid
                         {
                             grid[x][y] = listPossibles.get(0);
                             numbersPlaced++;
-                            System.out.println("Numbers placed : " + numbersPlaced);
                         }
                     }
                 }
@@ -262,7 +256,6 @@ public class Grid
                         grid[x][y] = gridCopy[x][y];
                     }
                 }
-                System.out.println("Solutions tested : " + solutionTested);
             }
             if (solutionTested == solutions.size()) // Si tous les interdits ont été testés et qu'aucune solution n'a été trouvée, on renvoie true
             {

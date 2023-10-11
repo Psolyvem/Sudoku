@@ -3,7 +3,6 @@ package org.sudoku;
 import javax.swing.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
 
 public class SudokuCase implements MouseListener
 {
@@ -20,7 +19,7 @@ public class SudokuCase implements MouseListener
     boolean isLocked = false; //Case résolue, non modifiable
 
     //Constructeur
-    SudokuCase(int value, JPanel panel, Grid grid, int posx, int posy) throws IOException
+    SudokuCase(int value, JPanel panel, Grid grid, int posx, int posy)
     {
         this.value = value;
         this.panel = panel;
